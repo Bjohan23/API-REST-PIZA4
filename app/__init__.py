@@ -50,8 +50,6 @@ def create_app():
         Se conecta a la base de datos, crea la tabla 'Users' si no existe y luego cierra la conexión.
         """
         database.connect()
-        User.create_table_if_not_exists()
-        database.close()
         print("Database initialization completed.")
 
     return app
