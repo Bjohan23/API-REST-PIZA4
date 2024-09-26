@@ -5,13 +5,21 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class Usuario(Model):
     id = AutoField()
-    persona = ForeignKeyField(Persona, backref='usuarios', on_delete='CASCADE')
+    persona_id = ForeignKeyField(Persona, backref='usuarios', on_delete='CASCADE')
     contrasena = CharField(max_length=255)
 
     class Meta:
         database = database
         table_name = 'usuarios'
-    
+
+    # Método para convertir el objeto en un diccionario
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'persona_id': self.persona_id.id,
+            'contrasena': self.contrasena
+        }
+
     # Métodos para hashear y verificar contraseñas
     @classmethod
     def set_password(cls, password):
@@ -19,3 +27,10 @@ class Usuario(Model):
 
     def check_password(self, password):
         return check_password_hash(self.contrasena, password)
+
+    # Sobrescribimos el método save() para hashear la contraseña antes de guardarla
+    def save(self, *args, **kwargs):
+        # Si la contraseña no está hasheada aún, la hasheamos antes de guardar
+        if not self.contrasena.startswith('pbkdf2:sha256'):  # Evita hashear múltiples veces
+            self.contrasena = Usuario.set_password(self.contrasena)
+        super().save(*args, **kwargs)

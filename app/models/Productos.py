@@ -7,7 +7,7 @@ class Categoria(Model):
 
     class Meta:
         database = database
-        table_name = 'categoria'
+        table_name = 'categoría'
 
 class Presentacion(Model):
     id = AutoField()

@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from app.routes.user_routes import user_bp
 from app.routes.productos import productos_bp
 from app.routes.auth_routes import auth_bp
 from app.database import database
-from app.models.user import User
+from app.routes.usuarios_routes import usuarios_bp
+from app.routes.categorias_routes import categorias_bp
 
 def create_app():
     app = Flask(__name__)
@@ -16,8 +16,9 @@ def create_app():
 
     # Registrar los blueprints de rutas
     app.register_blueprint(productos_bp, url_prefix='/productos')
-    app.register_blueprint(user_bp, url_prefix='/users')
+    app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(categorias_bp, url_prefix='/categorias')
 
     @app.before_request
     def before_request():
@@ -27,12 +28,5 @@ def create_app():
     def after_request(response):
         database.close()
         return response
-
-    @app.cli.command("init-db")
-    def init_db():
-        database.connect()
-        User.create_table_if_not_exists()
-        database.close()
-        print("Database initialization completed.")
 
     return app
