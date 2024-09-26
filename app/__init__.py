@@ -1,55 +1,38 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
 from app.routes.user_routes import user_bp
+from app.routes.productos import productos_bp
+from app.routes.auth_routes import auth_bp
 from app.database import database
 from app.models.user import User
 
 def create_app():
-    """
-    Función que crea e inicializa la aplicación Flask.
-    Returns:
-        Flask: La instancia de la aplicación Flask.
-    """
-    # Crear la instancia de la aplicación Flask
     app = Flask(__name__)
-    # Cargar la configuración de la aplicación desde el módulo 'config.Config'
     app.config.from_object('config.Config')
 
-    # Registrar el blueprint de las rutas de usuario con el prefijo '/users'
-    app.register_blueprint(user_bp, url_prefix='/users')
+    # Configurar Flask-JWT-Extended
+    app.config["JWT_SECRET_KEY"] = "scrypt:32768:8:1$G7poecr8n85E8NT1$ce0a5df4a97bfb20af97d81f3947b5d76baa2e3683a83a513849624f46e4f6414dedaa42feae6d4651f2133e6c9cd1091cf8a5faf60318819890b55849140629"  # Cambia esto por una clave secreta segura
+    jwt = JWTManager(app)
 
-    # Definir la función que se ejecutará antes de cada solicitud
+    # Registrar los blueprints de rutas
+    app.register_blueprint(productos_bp, url_prefix='/productos')
+    app.register_blueprint(user_bp, url_prefix='/users')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+
     @app.before_request
     def before_request():
-        """
-        Función que se ejecuta antes de cada solicitud.
-        Se encarga de conectarse a la base de datos.
-        """
         database.connect()
 
-    # Definir la función que se ejecutará después de cada solicitud
     @app.after_request
     def after_request(response):
-        """
-        Función que se ejecuta después de cada solicitud.
-        Se encarga de cerrar la conexión a la base de datos y devolver la respuesta.
-
-        Args:
-            response (flask.Response): La respuesta de la solicitud.
-
-        Returns:
-            flask.Response: La respuesta de la solicitud.
-        """
         database.close()
         return response
 
-    # Definir un comando de línea de comandos para inicializar la base de datos
     @app.cli.command("init-db")
     def init_db():
-        """
-        Función que inicializa la base de datos.
-        Se conecta a la base de datos, crea la tabla 'Users' si no existe y luego cierra la conexión.
-        """
         database.connect()
+        User.create_table_if_not_exists()
+        database.close()
         print("Database initialization completed.")
 
     return app
