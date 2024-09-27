@@ -79,24 +79,26 @@ def get_comprobante_venta_detalles(comprobante_id):
 def detalle_pedido_to_dict(detalle):
     return {
         'id': detalle.id,
-        'pedido_id': detalle.pedido_id.id,
-        'producto_id': detalle.producto_id.id,
-        'producto_nombre': detalle.producto_id.nombre,
+        'pedido_id': detalle.pedido_id,
+        'producto_id': detalle.producto.id,
+        'producto_nombre': detalle.producto.nombre,
         'cantidad': detalle.cantidad,
         'precio': str(detalle.precio),
-        'subtotal': str(detalle.subtotal),
+        # 'subtotal': str(detalle.subtotal),
         'cliente': {
-            'id': detalle.pedido_id.cliente_id.id,
-            'nombre': detalle.pedido_id.cliente_id.persona_cliente.nombre,
-            'apellido': detalle.pedido_id.cliente_id.persona_cliente.apellido
+            'id': detalle.pedido.cliente_id.id,
+            'nombre': detalle.pedido.cliente_id.persona.nombre,
         },
         'usuario': {
-            'id': detalle.pedido_id.usuario_id.id,
-            'nombre': detalle.pedido_id.usuario_id.persona_usuario.nombre,
-            'apellido': detalle.pedido_id.usuario_id.persona_usuario.apellido
+            'id': detalle.pedido.usuario_id.id,
+            'nombre': detalle.pedido.usuario_id.persona_id.nombre,
+            'dni': detalle.pedido.usuario_id.persona_id.dni,
+            'email': detalle.pedido.usuario_id.persona_id.email,
+            'telefono': detalle.pedido.usuario_id.persona_id.telefono,
         },
         'mesa': {
-            'id': detalle.pedido_id.mesa_id.id,
-            'numero': detalle.pedido_id.mesa_id.numero
+            'id': detalle.pedido.mesa_id.id,
+            'numero': detalle.pedido.mesa_id.numero,
+            'capacidad': detalle.pedido.mesa_id.capacidad,
         }
     }
