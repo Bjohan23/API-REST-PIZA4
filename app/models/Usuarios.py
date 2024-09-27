@@ -17,6 +17,11 @@ class Usuario(Model):
         return {
             'id': self.id,
             'persona_id': self.persona_id.id,
+            'nombre': self.persona_id.nombre,
+            'telefono': self.persona_id.telefono,
+            'direccion': self.persona_id.direccion,
+            'email': self.persona_id.email,
+            'dni': self.persona_id.dni,
             'contrasena': self.contrasena
         }
 
