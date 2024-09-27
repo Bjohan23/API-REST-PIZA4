@@ -10,6 +10,8 @@ from app.routes.piso_routes import pisos_bp
 from app.routes.mesa_routes import mesas_bp
 from app.routes.pedidosComanda_routes import pedidosComanda_bp
 from app.routes.detallesPedido_routes import detalles_pedido_bp
+from app.routes.comprobanteVenta_routes import comprobante_venta_bp
+
 
 def create_app():
     app = Flask(__name__)
@@ -29,6 +31,7 @@ def create_app():
     app.register_blueprint(mesas_bp, url_prefix='/mesas')
     app.register_blueprint(pedidosComanda_bp, url_prefix='/pedidosComanda')
     app.register_blueprint(detalles_pedido_bp, url_prefix='/detallesPedido')
+    app.register_blueprint(comprobante_venta_bp, url_prefix='/comprobanteVenta')
 
     @app.before_request
     def before_request():
