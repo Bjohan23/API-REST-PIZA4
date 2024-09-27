@@ -15,3 +15,13 @@ class DetallePedido(Model):
     class Meta:
         database = database
         table_name = 'detallespedido'
+
+    def to_dict(self):
+        return{
+            'id': self.id,
+            'pedido_id': self.pedido.id,
+            'producto_id': self.producto.id,
+            'cantidad': self.cantidad,
+            'precio': self.precio,
+            'descripcion': self.descripcion
+        }

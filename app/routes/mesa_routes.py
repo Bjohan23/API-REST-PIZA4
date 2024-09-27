@@ -6,7 +6,8 @@ from app.services.services_mesas import (
     update_mesa_by_id,
     delete_mesa_by_id,
     get_mesas_by_piso_id,
-    get_mesas_by_piso_id_and_estado
+    get_mesas_by_piso_id_and_estado,
+    get_mesas_by_estado
 )
 
 
@@ -41,3 +42,7 @@ def get_mesas_by_piso(piso_id):
 @mesas_bp.route('/piso/<int:piso_id>/estado/<estado>', methods=['GET'])#/mesas/piso/2/estado/libre
 def get_mesas_by_piso_and_estado(piso_id, estado):
     return get_mesas_by_piso_id_and_estado(piso_id, estado)
+
+@mesas_bp.route('/estado/<string:estado>', methods=['GET'])
+def get_mesas_by_estado_route(estado):
+    return get_mesas_by_estado(estado)

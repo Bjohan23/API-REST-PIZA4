@@ -37,3 +37,15 @@ class PedidoComanda(Model):
     class Meta:
         database = database
         table_name = 'pedidoscomanda'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'usuario_id': self.usuario_id.id,
+            'cliente_id': self.cliente_id.id,
+            'mesa_id': self.mesa_id.id,
+            'fecha': self.fecha,
+            'estado': self.estado,
+            'total': self.total
+        }
+    

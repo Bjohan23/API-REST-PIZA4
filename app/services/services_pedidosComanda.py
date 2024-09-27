@@ -59,4 +59,9 @@ def get_pedidosComanda_by_mesa_id_and_usuario_id(mesa_id, usuario_id):
     pedidosComanda = PedidoComanda.select().join(Mesa).where(Mesa.id == mesa_id, PedidoComanda.usuario_id == usuario_id)
     return jsonify([pedidoComanda.to_dict() for pedidoComanda in pedidosComanda])
 
+def get_pedidosComanda_by_estado(estado):
+    pedidosComanda = PedidoComanda.select().where(PedidoComanda.estado == estado)
+    return jsonify([pedidoComanda.to_dict() for pedidoComanda in pedidosComanda])
+
+
 
