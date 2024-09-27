@@ -42,7 +42,3 @@ def get_mesas_by_piso_id(piso_id):
 def get_mesas_by_piso_id_and_estado(piso_id, estado):
     mesas = Mesa.select().where(Mesa.piso_id == piso_id, Mesa.estado == estado)
     return jsonify([mesa.to_dict() for mesa in mesas])
-
-def get_mesas_by_piso_id_and_estado_and_usuario_id(piso_id, estado, usuario_id):
-    mesas = Mesa.select().where(Mesa.piso_id == piso_id, Mesa.estado == estado, Mesa.usuario_id == usuario_id)
-    return jsonify([mesa.to_dict() for mesa in mesas])

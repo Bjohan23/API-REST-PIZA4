@@ -6,8 +6,7 @@ from app.services.services_mesas import (
     update_mesa_by_id,
     delete_mesa_by_id,
     get_mesas_by_piso_id,
-    get_mesas_by_piso_id_and_estado,
-    get_mesas_by_piso_id_and_estado_and_usuario_id
+    get_mesas_by_piso_id_and_estado
 )
 
 
@@ -35,16 +34,10 @@ def update_mesa(mesa_id):
 def delete_mesa(mesa_id):
     return delete_mesa_by_id(mesa_id)
 
-@mesas_bp.route('/mesas/piso/<int:piso_id>', methods=['GET'])
+@mesas_bp.route('/piso/<int:piso_id>', methods=['GET'])
 def get_mesas_by_piso(piso_id):
     return get_mesas_by_piso_id(piso_id)
 
-@mesas_bp.route('/mesas/piso/<int:piso_id>/estado/<estado>', methods=['GET'])
+@mesas_bp.route('/piso/<int:piso_id>/estado/<estado>', methods=['GET'])#/mesas/piso/2/estado/libre
 def get_mesas_by_piso_and_estado(piso_id, estado):
     return get_mesas_by_piso_id_and_estado(piso_id, estado)
-
-@mesas_bp.route('/mesas/piso/<int:piso_id>/estado/<estado>/usuario/<int:usuario_id>', methods=['GET'])
-def get_mesas_by_piso_and_estado_and_usuario(piso_id, estado, usuario_id):
-    return get_mesas_by_piso_id_and_estado_and_usuario_id(piso_id, estado, usuario_id)
-
-
