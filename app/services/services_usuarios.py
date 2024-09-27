@@ -42,8 +42,9 @@ def update_usuario_by_id(usuario_id, data):
     try:
         usuario = Usuario.get_by_id(usuario_id)
         persona = usuario.persona_id  # Obtener la persona asociada
+
         # Actualizar campos del usuario, incluyendo el hasheo de la nueva contraseña si es proporcionada
-        if 'contrasena' in data:
+        if 'contrasena' in data and data['contrasena']:
             usuario.contrasena = Usuario.set_password(data['contrasena'])
 
         if 'persona_id' in data:
@@ -68,7 +69,6 @@ def update_usuario_by_id(usuario_id, data):
         return jsonify({"message": "Error de integridad al actualizar el usuario"}), 400
     except Exception as e:
         return jsonify({"message": str(e)}), 400
-
 
 def delete_usuario_by_id(usuario_id):
     try:

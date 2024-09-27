@@ -5,6 +5,9 @@ from app.routes.auth_routes import auth_bp
 from app.database import database
 from app.routes.usuarios_routes import usuarios_bp
 from app.routes.categorias_routes import categorias_bp
+from app.routes.cliente_routes import clientes_bp
+from app.routes.piso_routes import pisos_bp
+from app.routes.mesa_routes import mesas_bp
 
 def create_app():
     app = Flask(__name__)
@@ -15,10 +18,13 @@ def create_app():
     jwt = JWTManager(app)
 
     # Registrar los blueprints de rutas
+    app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(productos_bp, url_prefix='/productos')
     app.register_blueprint(usuarios_bp, url_prefix='/usuarios')
-    app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(categorias_bp, url_prefix='/categorias')
+    app.register_blueprint(clientes_bp, url_prefix='/clientes')
+    app.register_blueprint(pisos_bp, url_prefix='/piso')
+    app.register_blueprint(mesas_bp, url_prefix='/mesas')
 
     @app.before_request
     def before_request():

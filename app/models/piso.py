@@ -18,3 +18,10 @@ class Piso(Model):
     class Meta:
         database = database
         table_name = 'piso'
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'sede_id': self.sede_id.id,
+            'nombre': self.nombre
+        }
