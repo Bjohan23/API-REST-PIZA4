@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
 from app.services.services_comprobanteventa import (
     get_all_comprobantes_venta,
     get_comprobante_venta_by_id,
@@ -11,11 +12,13 @@ from app.services.services_comprobanteventa import (
 comprobante_venta_bp = Blueprint('comprobanteVenta', __name__)
 
 @comprobante_venta_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_comprobantes_venta():
     comprobantes = get_all_comprobantes_venta()
     return jsonify(comprobantes), 200
 
 @comprobante_venta_bp.route('/<int:comprobante_id>', methods=['GET'])
+@jwt_required()
 def get_comprobante_venta(comprobante_id):
     comprobante = get_comprobante_venta_by_id(comprobante_id)
     if comprobante:
@@ -24,12 +27,14 @@ def get_comprobante_venta(comprobante_id):
         return jsonify({'error': 'Comprobante no encontrado'}), 404
 
 @comprobante_venta_bp.route('/', methods=['POST'])
+@jwt_required()
 def add_comprobante_venta():
     data = request.get_json()
     comprobante = create_comprobante_venta(data)
     return jsonify(comprobante), 201
 
 @comprobante_venta_bp.route('/<int:comprobante_id>', methods=['PUT'])
+@jwt_required()
 def modify_comprobante_venta(comprobante_id):
     data = request.get_json()
     comprobante = update_comprobante_venta(comprobante_id, data)
@@ -39,6 +44,7 @@ def modify_comprobante_venta(comprobante_id):
         return jsonify({'error': 'Comprobante no encontrado'}), 404
 
 @comprobante_venta_bp.route('/<int:comprobante_id>', methods=['DELETE'])
+@jwt_required()
 def remove_comprobante_venta(comprobante_id):
     success = delete_comprobante_venta(comprobante_id)
     if success:
@@ -47,5 +53,6 @@ def remove_comprobante_venta(comprobante_id):
         return jsonify({'error': 'Comprobante no encontrado'}), 404
     
 @comprobante_venta_bp.route('/<int:comprobante_id>/detalles', methods=['GET'])
+@jwt_required()
 def get_comprobante_venta_con_detalles(comprobante_id):
     return get_comprobante_venta_detalles(comprobante_id)

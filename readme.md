@@ -60,3 +60,10 @@ Cuando hayas terminado de trabajar en el proyecto, puedes desactivar el entorno 
 
 ```sh
 deactivate
+```
+
+## Crear archivo requeriments.txt
+
+```sh
+   pip freeze > requirements.txt
+```
