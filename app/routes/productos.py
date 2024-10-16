@@ -6,10 +6,12 @@ from app.services.services_productos import (
     update_producto_by_id,
     delete_producto_by_id
 )
+from flask_jwt_extended import  jwt_required
 
 productos_bp = Blueprint('productos', __name__)
 
 @productos_bp.route('/', methods=['GET'])
+@jwt_required()
 def get_productos():
     return get_all_productos()
 

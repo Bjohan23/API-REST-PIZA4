@@ -12,13 +12,14 @@ from app.routes.pedidosComanda_routes import pedidosComanda_bp
 from app.routes.detallesPedido_routes import detalles_pedido_bp
 from app.routes.comprobanteVenta_routes import comprobante_venta_bp
 
-
 def create_app():
     app = Flask(__name__)
     app.config.from_object('config.Config')
 
     # Configurar Flask-JWT-Extended
-    app.config["JWT_SECRET_KEY"] = "scrypt:32768:8:1$G7poecr8n85E8NT1$ce0a5df4a97bfb20af97d81f3947b5d76baa2e3683a83a513849624f46e4f6414dedaa42feae6d4651f2133e6c9cd1091cf8a5faf60318819890b55849140629"  # Cambia esto por una clave secreta segura
+    app.config["JWT_SECRET_KEY"] = "segura123"  # Cambia esto por una clave secreta segura
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 21600  # 6 hora de expiración
+    # app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 60  # 1 minuto expiración
     jwt = JWTManager(app)
 
     # Registrar los blueprints de rutas

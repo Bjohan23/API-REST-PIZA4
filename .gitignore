@@ -4,4 +4,4 @@ venv/
 __pycache__/
 *.pyc
 # Archivos de configuración del entorno
-.env
+*.env

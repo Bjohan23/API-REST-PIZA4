@@ -18,14 +18,33 @@ def get_comprobante_venta_by_id(comprobante_id):
         return comprobante.to_dict()
     except ComprobanteVenta.DoesNotExist:
         return None
-
 def create_comprobante_venta(data):
-    comprobante = ComprobanteVenta.create(
-        pedido_id=data['pedido_id'],
-        tipo=data['tipo'],
-        monto=data['monto']
-    )
-    return comprobante.to_dict()
+    try:
+        # Verificar que el pedido existe y está pendiente
+        pedido = PedidoComanda.get(PedidoComanda.id == data['pedido_id'])
+        if pedido.estado != 'pendiente':
+            return {'error': 'El pedido no está en estado pendiente'}, 400
+
+        # Actualizar el estado del pedido a "pagado"
+        pedido.estado = 'pagado'
+        pedido.save()
+
+        # Actualizar el estado de la mesa a "libre"
+        mesa = Mesa.get(Mesa.id == pedido.mesa_id.id)
+        mesa.estado = 'libre'
+        mesa.save()
+
+        # Crear el comprobante de venta
+        comprobante = ComprobanteVenta.create(
+            pedido_id=pedido.id,
+            tipo=data['tipo'],
+            monto=data['total'],
+        )
+        return comprobante.to_dict()
+    except PedidoComanda.DoesNotExist:
+        return {'error': 'Pedido no encontrado'}, 404
+    except Mesa.DoesNotExist:
+        return {'error': 'Mesa no encontrada'}, 404
 
 def update_comprobante_venta(comprobante_id, data):
     try:

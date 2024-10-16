@@ -1,11 +1,11 @@
 from app.models.Usuarios import Usuario
 from app.models.Personas import Persona
-from flask import jsonify, request
+from flask import jsonify
 from peewee import IntegrityError
 
 def get_all_usuarios():
     usuarios = Usuario.select()
-    return jsonify([usuario.to_dict() for usuario in usuarios]) 
+    return jsonify([usuario.to_dict() for usuario in usuarios])
 
 def get_usuario_by_id(usuario_id):
     try:
@@ -16,28 +16,20 @@ def get_usuario_by_id(usuario_id):
 
 def create_usuario(data):
     try:
-        # Crear la persona primero
-        persona_data = {
-            'nombre': data['nombre'],
-            'telefono': data['telefono'],
-            'direccion': data['direccion'],
-            'email': data['email'],
-            'dni': data['dni']
-        }
-        persona = Persona.create(**persona_data)
-
-        # Hashear la contraseña antes de crear el usuario
-        contrasena_hashed = Usuario.set_password(data['contrasena'])
-        usuario = Usuario.create(
-            persona_id=persona.id,
-            contrasena=contrasena_hashed
+        usuario = Usuario.create_user(
+            username=data['username'],
+            contrasena=data['contrasena'],
+            nombre=data['nombre'],
+            telefono=data['telefono'],
+            direccion=data['direccion'],
+            email=data['email'],
+            dni=data['dni']
         )
         return jsonify(usuario.to_dict()), 201
-    except IntegrityError as e:
+    except IntegrityError:
         return jsonify({"message": "Error al crear el usuario: Usuario ya existe o campos inválidos"}), 400
     except Exception as e:
         return jsonify({"message": str(e)}), 400
-
 def update_usuario_by_id(usuario_id, data):
     try:
         usuario = Usuario.get_by_id(usuario_id)

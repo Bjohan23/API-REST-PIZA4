@@ -23,7 +23,7 @@ def get_comprobante_venta(comprobante_id):
     else:
         return jsonify({'error': 'Comprobante no encontrado'}), 404
 
-@comprobante_venta_bp.route('', methods=['POST'])
+@comprobante_venta_bp.route('/', methods=['POST'])
 def add_comprobante_venta():
     data = request.get_json()
     comprobante = create_comprobante_venta(data)
