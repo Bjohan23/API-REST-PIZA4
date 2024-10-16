@@ -27,9 +27,12 @@
         ```sh
         source venv/Scripts/activate
         ```
-      ```cmd
-        .\venv\Scripts\activate
-        ```
+
+        > **Nota:** Si el comando `source venv/Scripts/activate` no funciona, puedes intentar con el siguiente:
+        >
+        > ```cmd
+        > .\venv\Scripts\activate
+        >
 
     - En macOS/Linux:
 
@@ -63,6 +66,8 @@ deactivate
 ```
 
 ## Crear archivo requeriments.txt
+
+Si deseas modificar el proyecto y has agregado nuevos paquetes, genera el archivo `requirements.txt` con el siguiente comando:
 
 ```sh
    pip freeze > requirements.txt
